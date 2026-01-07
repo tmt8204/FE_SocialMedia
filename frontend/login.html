@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login • Gummy</title>
+<link rel="stylesheet" href="css/ui.css">
+
+<!-- Poppins font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background: #F7F7F7; /* Removed gradient */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .login-container {
+    text-align: center;
+  }
+
+  .logo-big {
+    font-size: 60px;
+    font-weight: 700;
+    color: #E88DB5;
+    margin-bottom: 20px;
+  }
+
+  .login-box {
+    width: 380px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    background: #FFFFFF;
+    transition: 0.25s;
+  }
+
+  .input:focus {
+    border-color: #B7EBD6;
+    box-shadow: 0 0 0 3px rgba(183,235,214,0.4);
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #B7EBD6;
+    color: #3f5f56;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: 0.25s;
+  }
+
+  .btn-login:hover {
+    background: #AEE4CD;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  }
+
+  .forgot {
+    color: #A67E9B;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .line {
+    height: 1px;
+    background: #e7dede;
+    margin: 20px 0;
+  }
+
+  .btn-new {
+    background: white;
+    color: #4DB49F;
+    padding: 14px;
+    width: 70%;
+    border-radius: 10px;
+    font-size: 17px;
+    border: 2px solid #6CC9AE;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
+  }
+
+  .btn-new:hover {
+    background: #E8FFF6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Toast notification */
+  .toast-container {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 99999 !important;
+    pointer-events: none !important;
+  }
+
+  .toast {
+    background: white !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    margin-bottom: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-width: 300px !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    animation: slideIn 0.3s ease forwards !important;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .toast.success {
+    border-left: 4px solid #4DB49F;
+  }
+
+  .toast.success .toast-icon {
+    color: #4DB49F;
+  }
+
+  .toast.error {
+    border-left: 4px solid #E88DB5;
+  }
+
+  .toast.error .toast-icon {
+    color: #E88DB5;
+  }
+
+  .toast-icon {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .toast-message {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="login-container">
+  <div class="logo-big">Gummy</div>
+
+  <div class="login-box">
+    <form id="loginForm" onsubmit="return false;">
+      <input id="username" name="username" type="text" class="input" placeholder="Email or username" autocomplete="username" required>
+      <input id="password" name="password" type="password" class="input" placeholder="Password" autocomplete="current-password" required>
+
+      <button type="submit" class="btn-login">Log In</button>
+
+      <a href="#" class="forgot">Forgot password?</a>
+
+      <div class="line"></div>
+
+      <button type="button" class="btn-new" onclick="location.href='register.html'">
+        Create a Gummy Account
+      </button>
+    </form>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/auth-shared.js"></script>
+<script src="js/pages/auth.js"></script>
+<script>
+// Test toast immediately on page load
+window.addEventListener('DOMContentLoaded', function() {
+  console.log("Page loaded, testing toast...");
+  // Uncomment below to test toast on page load
+  // setTimeout(() => showToast("Test toast!", "error"), 1000);
+});
+</script>
+</body>
+</html>

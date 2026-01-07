@@ -1,0 +1,346 @@
+1) Code của em là TCP hay UDP?
+
+Trả lời: TCP.
+
+Giải thích 1 câu: Vì hệ thống dùng HTTP/REST và WebSocket, mà WebSocket chạy trên TCP (kết nối ổn định, đảm bảo thứ tự, không mất gói).
+
+Nếu thầy bắt chỉ ra code:
+
+Bạn có REST API dạng /api/... trong controller (chạy qua HTTP → TCP):
+
+@RestController
+@RequestMapping("/api/posts")
+public class PostController { ... }
+
+
+Phần WebSocket của bạn dùng Spring WebSocket (bản chất là TCP). (Nếu thầy hỏi file WS handler/config thì bạn mở file ChatWebSocketHandler/WebSocketConfig của bạn.)
+
+
+2) Hệ thống đa luồng hay đơn luồng?
+
+Trả lời: Đa luồng.
+
+Giải thích 1 câu: Spring Boot server xử lý nhiều request / nhiều WebSocket connection cùng lúc, mỗi request/connection thường được xử lý trên thread riêng (thread pool).
+
+Nếu thầy hỏi “code đa luồng chỗ nào?”
+
+Bạn không tự new Thread() trong code Post (vì Spring xử lý đa luồng ở server container), nhưng có dấu hiệu rõ: bạn viết API phục vụ nhiều user đồng thời + WebSocket chat realtime.
+
+Bạn có dùng cấu trúc thread-safe kiểu ConcurrentHashMap trong WebSocket handler (nếu đúng như file chat bạn đã gửi trước đó) → đó là dấu hiệu xử lý đồng thời.
+
+
+
+3) Đa tuyến / đơn tuyến là gì? Hệ thống em loại nào?
+
+Trả lời: Đa tuyến (multi-connection / nhiều luồng giao tiếp).
+
+Nói ngắn gọn:
+
+Đơn tuyến: 1 luồng/1 đường truyền xử lý tuần tự từng client.
+
+Đa tuyến: nhiều client kết nối đồng thời → server xử lý song song.
+
+Hệ thống của bạn: nhiều user online cùng lúc + chat + feed → đa tuyến.
+
+
+
+4) Em dùng công nghệ gì trong bài? (nói đúng “bài mạng”)
+
+Trả lời gọn (đúng trọng tâm):
+
+REST API (HTTP) cho đăng nhập/đăng bài/comment
+
+WebSocket cho chat/thời gian thực
+
+SQL Server lưu trữ
+
+JWT + Spring Security xác thực/ phân quyền
+
+BCrypt để hash mật khẩu
+
+
+
+5) Tại sao dùng WebSocket?
+
+Trả lời: Vì chat/ tương tác realtime cần độ trễ thấp và đẩy dữ liệu 2 chiều.
+
+So sánh 1 câu:
+
+HTTP thường: phải request liên tục (polling) mới cập nhật.
+
+WebSocket: kết nối 1 lần, server đẩy tin ngay.
+
+
+
+6) Ưu nhược điểm WebSocket so với công nghệ khác
+So với HTTP Polling/Long Polling
+
+✅ Ưu: realtime thật, ít request thừa, mượt
+❌ Nhược: quản lý kết nối khó hơn, scale khó hơn HTTP
+
+So với UDP
+
+✅ TCP/WebSocket: đảm bảo đúng thứ tự – không mất gói (phù hợp chat)
+❌ UDP: nhanh nhưng mất gói → chat dễ lỗi, thiếu tin
+
+
+
+7) Bảo mật bằng gì? (chỉ ra code)
+(A) JWT + Spring Security (xác thực & phân quyền)
+
+Trả lời: Em dùng Spring Security + JWT để bảo vệ API.
+
+Chỉ ra code – SecurityConfig (bắt login, phân quyền admin):
+
+.authorizeHttpRequests(auth -> auth
+  .requestMatchers("/api/auth/**", "/error").permitAll()
+  .requestMatchers("/api/admin/**").hasRole("ADMIN")
+  .anyRequest().authenticated()
+)
+.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+.csrf(csrf -> csrf.disable())
+
+
+(Trong SecurityConfig.txt)
+
+Chỉ ra code – JwtAuthFilter (đọc Bearer token, set Authentication):
+
+String auth = request.getHeader("Authorization");
+if (auth == null || !auth.startsWith("Bearer ")) { ... }
+
+String token = auth.substring(7);
+Claims claims = jwtUtil.parseClaims(token);
+String userId = claims.getSubject();
+String role = (String) claims.get("role");
+var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+SecurityContextHolder.getContext().setAuthentication(
+  new UsernamePasswordAuthenticationToken(userId, null, authorities)
+);
+
+
+(Trong JwtAuthFilter.txt)
+
+Chỉ ra code – JwtUtil (ký token + hết hạn):
+
+.setExpiration(exp)
+.signWith(Keys.hmacShaKeyFor(secret.getBytes(UTF_8)), SignatureAlgorithm.HS256)
+
+
+(Trong JwtUtil.txt)
+
+(B) BCrypt hash mật khẩu
+
+Trả lời: mật khẩu được hash bằng BCrypt.
+
+Chỉ ra code:
+
+@Bean
+public PasswordEncoder passwordEncoder() {
+  return new BCryptPasswordEncoder();
+}
+
+
+(Trong SecurityConfig.txt)
+
+
+
+
+8) Bảo mật 2 lớp hay 3 lớp?
+
+Trả lời: 3 lớp ở tầng ứng dụng.
+
+Hash mật khẩu: BCrypt (không lưu plaintext)
+
+Xác thực: JWT (token có hạn)
+
+Phân quyền: role USER/ADMIN + chặn endpoint admin
+
+Nếu thầy hỏi “có HTTPS chưa?” → trả lời thẳng: khi chạy local là HTTP, deploy thật mới bật HTTPS (tầng hạ tầng).
+
+
+
+9) Em có chống SQL Injection không? (chỉ code)
+
+Trả lời: Có, vì dùng JPA + query tham số (không nối chuỗi SQL).
+
+Chỉ ra code – PostRepository dùng @Param:
+
+@Query("""
+  SELECT p FROM Post p
+  LEFT JOIN FETCH p.user u
+  WHERE p.postId = :postId
+""")
+Optional<Post> findByIdWithUser(@Param("postId") Integer postId);
+
+
+
+
+10) DDoS có chống không?
+
+Trả lời đúng trọng tâm:
+
+JWT/Security không phải chống DDoS.
+
+DDoS cần rate limit / WAF / reverse proxy (Nginx, Cloudflare) ở tầng hạ tầng.
+
+Ở đồ án, em mới làm bảo vệ truy cập bằng auth/role.
+
+“Câu trả lời 20 giây” nếu thầy hỏi dồn
+
+Hệ thống em chạy theo mô hình client–server, dùng REST API và WebSocket. WebSocket và HTTP đều chạy trên TCP. 
+Server Spring Boot xử lý nhiều request/kết nối đồng thời nên là đa luồng và đa tuyến. 
+Bảo mật gồm BCrypt hash mật khẩu, JWT xác thực stateless và phân quyền role admin/user. 
+SQL injection được hạn chế nhờ JPA query tham số. 
+DDoS thì cần rate limit/WAF ở tầng hạ tầng, đồ án em chưa triển khai phần đó.
+
+
+
+Quy trình BCrypt (chi tiết từng bước)
+Input
+
+password (mật khẩu người dùng)
+
+cost (ví dụ 10, 11, 12…)
+
+salt ngẫu nhiên 128-bit (16 bytes)
+
+Bước 1 — Tạo salt ngẫu nhiên
+
+BCrypt tạo salt 16 bytes bằng random mạnh (SecureRandom)
+
+Salt được lưu kèm trong chuỗi hash, không cần bạn tự lưu riêng.
+
+Bước 2 — EksBlowfishSetup (phần “đắt” của BCrypt)
+
+BCrypt dùng Blowfish nhưng thay key schedule bình thường bằng EksBlowfish:
+
+Khởi tạo state Blowfish (P-array, S-boxes) với hằng số
+
+Trộn password vào state
+
+Trộn salt vào state
+
+Lặp 2^cost lần:
+
+ExpandKey(state, password, salt)
+
+ExpandKey(state, password, salt)
+
+Ý nghĩa: cost càng tăng → số vòng tăng theo lũy thừa → hash càng chậm.
+
+Ví dụ:
+
+cost=10 → 2^10 = 1024 vòng
+
+cost=12 → 2^12 = 4096 vòng (nặng hơn 4 lần)
+
+Bước 3 — Băm dữ liệu cố định bằng Blowfish nhiều lần
+
+BCrypt dùng state Blowfish vừa tạo để mã hoá chuỗi cố định (thường là "OrpheanBeholderScryDoubt"), lặp 64 vòng encrypt.
+
+Bước 4 — Xuất kết quả dạng chuẩn
+
+Kết quả BCrypt thường có format:
+
+$2a$10$<22chars_salt><31chars_hash>
+
+$2a$ hoặc $2b$: phiên bản BCrypt
+
+10: cost
+
+phần tiếp theo: salt + hash (base64 riêng của BCrypt)
+
+
+
+
+
+1️⃣ WebSocket là gì?
+
+Trả lời ngắn gọn:
+
+WebSocket là giao thức cho phép client và server giao tiếp hai chiều (full-duplex) theo thời gian thực trên một kết nối TCP duy nhất.
+
+
+
+2️⃣ Tại sao dự án của em dùng WebSocket?
+
+Trả lời:
+
+Vì hệ thống có chat và tương tác realtime, cần gửi dữ liệu ngay lập tức mà không phải request liên tục như HTTP.
+
+Nói dễ hiểu:
+
+HTTP: gửi → nhận → đóng kết nối
+
+WebSocket: kết nối 1 lần → giữ kết nối → gửi/nhận liên tục
+
+
+
+3️⃣ WebSocket trong dự án dùng để làm gì?
+
+👉 Chat realtime (1–1, 1–n)
+👉 Cập nhật tin nhắn ngay khi có người gửi
+👉 Giảm độ trễ so với HTTP polling
+
+
+
+4️⃣ Luồng hoạt động WebSocket (rất hay bị hỏi)
+Luồng chuẩn:
+Client → WebSocket handshake → Server
+Client ↔ Server (gửi/nhận message liên tục)
+
+Ví dụ chat 1–1:
+User A → WebSocket → Server → WebSocket → User B
+
+
+👉 Server đóng vai trò trung gian (broadcast / forward message)
+
+
+
+
+5️⃣ WebSocket chạy trên TCP hay UDP?
+
+👉 TCP
+
+Giải thích ngắn:
+
+WebSocket chạy trên TCP
+
+Đảm bảo:
+
+không mất gói
+
+đúng thứ tự
+
+phù hợp chat, tin nhắn
+
+
+
+6️⃣ WebSocket là đa luồng hay đơn luồng?
+
+👉 Đa luồng
+
+Giải thích:
+
+Mỗi client WebSocket kết nối tới server
+
+Server xử lý nhiều kết nối cùng lúc
+
+Spring Boot quản lý thread cho từng connection
+
+
+
+7️⃣ WebSocket có bảo mật không?
+
+👉 Có, nhưng phải kết hợp thêm
+
+Trong dự án của bạn:
+
+WebSocket chạy song song với JWT
+
+Token được gửi khi handshake (header hoặc query)
+
+Server kiểm tra token → mới cho kết nối
+
+👉 Không phải ai cũng connect được WebSocket

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gummy – Welcome</title>
+
+<link rel="stylesheet" href="css/ui.css">
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f7f7f7;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    /* ======= CANDY FALL ======= */
+    .candy {
+        position: fixed;
+        top: -50px;
+        font-size: 25px;
+        animation: fall linear forwards;
+        opacity: 0.9;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-50px) rotate(0deg); }
+        100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* ======= WELCOME BOX ======= */
+    .welcome-box {
+        text-align: center;
+        padding: 40px 60px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        width: 420px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .gummy-logo {
+        font-size: 45px;
+        font-weight: 900;
+        color: var(--gummy-pink);
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .slogan {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 35px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: none;
+        font-size: 17px;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: 0.2s;
+    }
+
+    .btn-login {
+        background: var(--gummy-mint);
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .btn-login:hover {
+        background: #6bd9b8;
+    }
+
+    .btn-register {
+        background: var(--gummy-pink);
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .btn-register:hover {
+        background: #e86ba8;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="welcome-box">
+
+    <div class="gummy-logo">Gummy</div>
+
+    <div class="slogan">
+        Kết nối ngọt ngào – chia sẻ khoảnh khắc pastel cùng bạn bè 🍬💖
+    </div>
+
+    <button class="btn btn-login" onclick="window.location='login.html'">
+        Đăng nhập
+    </button>
+
+    <button class="btn btn-register" onclick="window.location='register.html'">
+        Tạo tài khoản mới
+    </button>
+
+</div>
+
+
+<!-- =============================
+     🍬 CANDY FALL SCRIPT
+============================= -->
+<script>
+    const candies = ["🍬", "🍭", "💗", "✨", "🧁", "🍡"];
+
+    function createCandy() {
+        const candy = document.createElement("div");
+        candy.classList.add("candy");
+        candy.innerText = candies[Math.floor(Math.random() * candies.length)];
+
+        candy.style.left = Math.random() * window.innerWidth + "px";
+        candy.style.fontSize = 20 + Math.random() * 25 + "px";
+        candy.style.animationDuration = 4 + Math.random() * 4 + "s";
+
+        document.body.appendChild(candy);
+
+        setTimeout(() => candy.remove(), 8000);
+    }
+
+    setInterval(createCandy, 300);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Phương Tiện • Gummy</title>
+
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+.main-wrapper {
+    flex: 1;
+    margin-left: 20px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+}
+
+.coming-soon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.coming-soon-box {
+    background: white;
+    padding: 60px 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    max-width: 500px;
+}
+
+.coming-soon-box i {
+    font-size: 80px;
+    color: var(--gummy-pink);
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+.coming-soon-box h1 {
+    font-size: 42px;
+    color: var(--gummy-purple);
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.coming-soon-box p {
+    font-size: 18px;
+    color: #666;
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.coming-soon-box .emoji {
+    font-size: 60px;
+    margin: 20px 0;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 30px;
+    background: var(--gummy-mint);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: var(--gummy-purple);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
+<div class="layout-premium">
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div class="coming-soon-container">
+            <div class="coming-soon-box">
+                <i class="fas fa-images"></i>
+                <h1>Phương Tiện</h1>
+                <p>Trang này đang được phát triển</p>
+                <div class="emoji">🎬📸🎨</div>
+                <p style="font-size: 16px; color: #999;">Chúng tôi đang tạo một trải nghiệm tuyệt vời để quản lý ảnh và video của bạn.</p>
+                <p style="font-size: 14px; color: #bbb;">Quay lại trong thời gian sắp tới!</p>
+                
+                <a href="feed.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Quay Lại Bảng Tin
+                </a>
+            </div>
+        </div>
+    </div>
+</div> <!-- END layout-premium -->
+
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/api/api.users.js"></script>
+<script src="js/api/api.chat.js"></script>
+<script src="js/shared-layout.js"></script>
+
+</body>
+</html>

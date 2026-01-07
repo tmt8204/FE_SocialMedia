@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Cài Đặt • Gummy</title>
+
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&family=Noto+Sans+Vietnamese:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    font-family: 'Noto Sans Vietnamese', 'Noto Sans', sans-serif;
+}
+
+.settings-card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(232, 141, 181, 0.08);
+    border: 1px solid rgba(232, 141, 181, 0.05);
+    margin-bottom: 25px;
+    transition: 0.3s ease;
+}
+
+.settings-card:hover {
+    box-shadow: 0 6px 20px rgba(232, 141, 181, 0.12);
+    border-color: rgba(232, 141, 181, 0.1);
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(232, 141, 181, 0.05);
+    transition: 0.2s ease;
+}
+
+.setting-row:hover {
+    background: linear-gradient(90deg, rgba(183, 235, 214, 0.03) 0%, rgba(232, 141, 181, 0.03) 100%);
+    border-radius: 8px;
+    padding: 12px 8px;
+}
+
+.setting-row:last-child { border-bottom: none; }
+
+.setting-row span.label {
+    font-weight: 600;
+    color: #444;
+}
+
+.setting-value {
+    color: #666;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, var(--gummy-mint) 0%, #6CC9AE 100%);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+    color: white;
+    box-shadow: 0 2px 8px rgba(183, 235, 214, 0.2);
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(183, 235, 214, 0.3);
+    background: linear-gradient(135deg, #6CC9AE 0%, #5DB59D 100%);
+}
+
+.btn-small {
+    background: linear-gradient(135deg, rgba(232, 141, 181, 0.1) 0%, rgba(183, 235, 214, 0.1) 100%);
+    border: 1px solid rgba(232, 141, 181, 0.2);
+    padding: 6px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 500;
+    color: #555;
+}
+
+.btn-small:hover {
+    background: linear-gradient(135deg, rgba(232, 141, 181, 0.15) 0%, rgba(183, 235, 214, 0.15) 100%);
+    border-color: rgba(232, 141, 181, 0.3);
+}
+
+.btn-small:focus {
+    outline: none;
+    border-color: var(--gummy-mint);
+    box-shadow: 0 0 0 2px rgba(183, 235, 214, 0.2);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--gummy-pink) 0%, #D45B9A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+input[type="password"] {
+    font-family: 'Noto Sans Vietnamese', 'Noto Sans', sans-serif;
+    border: 1px solid rgba(232, 141, 181, 0.2) !important;
+    transition: 0.2s ease;
+}
+
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--gummy-mint) !important;
+    box-shadow: 0 0 0 3px rgba(183, 235, 214, 0.1) !important;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ⭐ PAGE LAYOUT (Shared layout injected by shared-layout.js) -->
+<div class="layout-premium">
+
+    <!-- ⭐ MAIN SETTINGS CONTENT -->
+    <div style="flex:1; max-width:800px;">
+
+
+        <!-- ======================= -->
+        <!-- GENERAL ACCOUNT SETTINGS -->
+        <!-- ======================= -->
+        <div class="settings-card">
+            <div class="section-title">Cài Đặt Tài Khoản Chung</div>
+
+            <div class="setting-row">
+                <span class="label">Tên</span>
+                <div>
+                    <span id="name">Anna Mui</span>
+                    <button class="btn-edit" onclick="editField('name','Tên')">Chỉnh Sửa</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Tên Đăng Nhập</span>
+                <div>
+                    <span id="username">@annamui</span>
+                    <button class="btn-edit" onclick="editField('username','Tên Đăng Nhập')">Chỉnh Sửa</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Email</span>
+                <div>
+                    <span id="email">anna@gmail.com</span>
+                    <button class="btn-edit" onclick="editField('email','Email')">Chỉnh Sửa</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Số Điện Thoại</span>
+                <div>
+                    <span id="phone">+84 987 123 456</span>
+                    <button class="btn-edit" onclick="editField('phone','Số Điện Thoại')">Chỉnh Sửa</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Mật Khẩu</span>
+                <div>
+                    <span id="password">●●●●●●●</span>
+                    <button class="btn-edit" onclick="openChangePassword()">Thay Đổi</button>
+                </div>
+            </div>
+
+            <div id="changePasswordBox" style="display:none; padding-top:12px;">
+                <input id="currentPassword" type="password" placeholder="Mật khẩu hiện tại" style="padding:8px;border-radius:8px;border:1px solid #ddd; width:200px; margin-right:8px;">
+                <input id="newPassword" type="password" placeholder="Mật khẩu mới" style="padding:8px;border-radius:8px;border:1px solid #ddd; width:200px; margin-right:8px;">
+                <button class="btn-edit" onclick="submitChangePassword()">Lưu</button>
+                <button class="btn-small" onclick="closeChangePassword()">Hủy</button>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- ======================= -->
+        <!-- PRIVACY -->
+        <!-- ======================= -->
+        <div class="settings-card">
+            <div class="section-title">Cài Đặt Riêng Tư</div>
+
+            <div class="setting-row">
+                <span class="label">Ai có thể xem bài viết của bạn?</span>
+                <select id="postPrivacy" class="btn-small" onchange="updatePrivacySetting('privacyPosts', this.value)">
+                    <option value="EVERYONE">Mọi Người</option>
+                    <option value="FRIENDS">Bạn Bè</option>
+                    <option value="ONLY_ME">Chỉ Mình Tôi</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Ai có thể gửi lời mời kết bạn?</span>
+                <select id="friendRequests" class="btn-small" onchange="updatePrivacySetting('privacyFriendRequests', this.value)">
+                    <option value="EVERYONE">Mọi Người</option>
+                    <option value="FRIENDS_OF_FRIENDS">Bạn Của Bạn</option>
+                    <option value="NO_ONE">Không Ai</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Ai có thể xem danh sách bạn bè của bạn?</span>
+                <select id="friendList" class="btn-small" onchange="updatePrivacySetting('privacyFriendList', this.value)">
+                    <option value="EVERYONE">Mọi Người</option>
+                    <option value="FRIENDS">Bạn Bè</option>
+                    <option value="ONLY_ME">Chỉ Mình Tôi</option>
+                </select>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- ======================= -->
+        <!-- SECURITY -->
+        <!-- ======================= -->
+        <div class="settings-card">
+            <div class="section-title">Bảo Mật</div>
+
+            <div class="setting-row">
+                <span class="label">Cảnh Báo Đăng Nhập</span>
+                <select id="loginAlerts" class="btn-small">
+                    <option selected>Bật</option>
+                    <option>Tắt</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Xác Thực Hai Yếu Tố</span>
+                <select id="twoFA" class="btn-small">
+                    <option>Bật</option>
+                    <option selected>Tắt</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <span class="label">Thiết Bị Được Công Nhận</span>
+                <button class="btn-edit" onclick="alert('Tính năng thiết bị sẽ sớm có!')">Xem</button>
+            </div>
+        </div>
+
+
+
+        <!-- ======================= -->
+        <!-- APPEARANCE -->
+        <!-- ======================= -->
+        <div class="settings-card">
+            <div class="section-title">Giao Diện</div>
+
+            <div class="setting-row">
+                <span class="label">Chủ Đề</span>
+                <select id="theme" class="btn-small">
+                    <option selected>Sáng</option>
+                    <option>Tối</option>
+                    <option>Pastel (Gummy)</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- ======================= -->
+        <!-- LOGOUT -->
+        <!-- ======================= -->
+        <div class="settings-card">
+            <button onclick="logout()" style="
+                width: 100%;
+                padding: 12px;
+                background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 16px;
+                cursor: pointer;
+                transition: 0.3s ease;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+                font-family: 'Noto Sans Vietnamese', 'Noto Sans', sans-serif;
+            " onmouseover="this.style.background='linear-gradient(135deg, #ff5252 0%, #ff3636 100%)'; this.style.boxShadow='0 6px 16px rgba(255, 107, 107, 0.3)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%)'; this.style.boxShadow='0 4px 12px rgba(255, 107, 107, 0.2)'; this.style.transform='translateY(0)';">
+                <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+            </button>
+        </div>
+
+
+    </div>
+
+</div> <!-- END layout -->
+
+
+
+<!-- ⭐ JAVASCRIPT -->
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/api/api.users.js"></script>
+<script src="js/api/api.chat.js"></script>
+<script src="js/api/api.settings.js"></script>
+<script src="js/shared-layout.js"></script>
+<script src="js/pages/profile-actions.js"></script>
+
+<script>
+// Tải cài đặt riêng tư khi trang được tải
+document.addEventListener('DOMContentLoaded', async () => {
+    // Chờ đợi SettingsAPI được tải
+    let retries = 0;
+    while (typeof SettingsAPI === 'undefined' && retries < 10) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        retries++;
+    }
+    
+    if (typeof SettingsAPI === 'undefined') {
+        console.warn('SettingsAPI không có sẵn');
+        return;
+    }
+    
+    try {
+        const settings = await SettingsAPI.getPrivacySettings();
+        console.log('Đã tải cài đặt riêng tư:', settings);
+        
+        // Cập nhật dropdown với các giá trị đã lưu
+        if (settings.privacyPosts) {
+            const el = document.getElementById('postPrivacy');
+            if (el) el.value = settings.privacyPosts;
+        }
+        if (settings.privacyFriendRequests) {
+            const el = document.getElementById('friendRequests');
+            if (el) el.value = settings.privacyFriendRequests;
+        }
+        if (settings.privacyFriendList) {
+            const el = document.getElementById('friendList');
+            if (el) el.value = settings.privacyFriendList;
+        }
+    } catch (err) {
+        console.error('Lỗi tải cài đặt riêng tư:', err);
+    }
+});
+
+// Cập nhật cài đặt riêng tư khi dropdown thay đổi
+async function updatePrivacySetting(key, value) {
+    try {
+        const settings = {};
+        settings[key] = value;
+        
+        console.log('Đang cập nhật:', settings);
+        const result = await SettingsAPI.updatePrivacySettings(settings);
+        
+        if (result.success) {
+            showToast('Cài đặt đã được lưu', 'success');
+        }
+    } catch (err) {
+        console.error('Lỗi lưu cài đặt riêng tư:', err);
+        showToast('Lưu cài đặt không thành công', 'error');
+    }
+}
+
+// Hàm thông báo Toast
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        border-radius: 8px;
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function logout() {
+    if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+        // Xóa tất cả dữ liệu xác thực
+        localStorage.removeItem('token');
+        localStorage.removeItem('gummy_userId');
+        localStorage.removeItem('gummy_name');
+        localStorage.removeItem('gummy_avatar');
+        
+        // Xóa bất kỳ dữ liệu ứng dụng khác nếu cần
+        sessionStorage.clear();
+        
+        // Chuyển hướng đến trang đăng nhập
+        window.location.href = 'login.html';
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+.fb-logo { font-size: 56px; font-weight: bold; color: var(--gummy-pink); margin-bottom: 25px; }
+
+.auth-box {
+  width: 420px;
+  background: rgba(255,255,255,0.82);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  backdrop-filter: blur(14px);
+}
+
+.input, .input-box {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  margin-bottom: 12px;
+}
+
+.input:focus {
+  border-color: var(--gummy-mint);
+  box-shadow: 0 0 0 3px rgba(183,235,214,0.45);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: var(--gummy-mint);
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.btn-green {
+  width: 100%;
+  border: 2px solid #6CC9AE;
+  border-radius: 12px;
+  padding: 14px;
+}

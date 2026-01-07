@@ -1,0 +1,728 @@
+/* =========================================================
+   GLOBAL SETTINGS — GUMMY PASTEL THEME
+========================================================= */
+:root {
+  --gummy-pink: #E88DB5;
+  --gummy-mint: #B7EBD6;
+  --gummy-yellow: #F9E79F;
+  --gummy-purple: #A67E9B;
+
+  /* Default avatar/cover */
+  --user-avatar: url("../images/avatar_anna.png");
+  --user-cover: url("../images/cover.jpg");
+}
+
+* { 
+    box-sizing: border-box; 
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #F7F7F7;
+  font-family: "Poppins", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--gummy-purple);
+}
+
+
+/* =========================================================
+   GLOBAL LAYOUT — FIX FEED BỊ SANG TRÁI
+========================================================= */
+.layout-premium {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center; /* CHUẨN NHẤT */
+    padding: 20px;
+    gap: 25px;
+    width: 100%;
+}
+
+
+/* =========================================================
+   TOPBAR — GLOBAL NAVBAR
+========================================================= */
+.topbar-premium {
+  background: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-premium .logo {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--gummy-pink);
+}
+
+.search-premium {
+  flex: 1;
+  padding: 12px;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+.top-icons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 22px;
+  color: var(--gummy-purple);
+}
+
+.top-icons i:hover {
+  color: var(--gummy-pink);
+}
+
+.avatar-small {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-image: var(--user-avatar);
+  background-size: cover;
+  background-position: center;
+}
+
+/* ========================================================= 
+   UNREAD MESSAGE BADGE
+========================================================= */
+.chat-icon-badge {
+  position: relative;
+  display: inline-block;
+}
+
+.unread-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #f02849;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+
+/* =========================================================
+   SIDEBAR LEFT
+========================================================= */
+.sidebar-left-premium {
+  width: 240px;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.side-item {
+  background: white;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.side-item.active,
+.side-item:hover {
+  background: var(--gummy-mint);
+  color: #3f5f56;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   SIDEBAR RIGHT
+========================================================= */
+.sidebar-right-premium {
+  width: 260px;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.card-title {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--gummy-pink);
+}
+
+.right-item {
+  padding: 10px 0;
+  color: var(--gummy-purple);
+  border-bottom: 1px solid #eee;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+
+/* =========================================================
+   GLOBAL CARD UI COMPONENT
+========================================================= */
+.card-premium {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+
+/* =========================================================
+   BUTTONS — GLOBAL
+========================================================= */
+.btn-premium {
+  width: 100%;
+  padding: 14px;
+  background: var(--gummy-mint);
+  color: #3f5f56;
+  border-radius: 12px;
+  border: none;
+  margin-top: 12px;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-premium:hover {
+  background: #AEE4CD;
+}
+
+
+/* =========================================================
+   INPUT — GLOBAL
+========================================================= */
+.input-box,
+.input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  background: white;
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 12px;
+  transition: 0.25s;
+}
+
+.input-box:focus,
+.input:focus {
+  border-color: var(--gummy-mint);
+  box-shadow: 0 0 0 3px rgba(183,235,214,0.45);
+}
+
+
+/* =========================================================
+   FEED CENTER COLUMN — QUAN TRỌNG
+========================================================= */
+.center-feed-premium {
+    flex: 1;
+    max-width: 700px;       /* độ rộng chuẩn Facebook */
+    margin: 0 auto;         /* đưa feed vào giữa */
+}
+
+
+/* =========================================================
+   STORY FIX — KHÔNG CHO BUNG TOÀN MÀN HÌNH
+========================================================= */
+.story-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    max-width: 100%;
+}
+
+.story-box {
+    width: 120px;
+    height: 190px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: none !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+/* FIX STORY AVATAR SIZE */
+.story-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* DELETE STORY BUTTON */
+.story-delete {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    background: rgba(255, 80, 80, 0.9);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+}
+
+#myStoryBox:hover .story-delete {
+    display: flex;
+}
+
+
+.story-box span {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 5px black;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   GLOBAL ANIMATION
+========================================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* =========================================================
+   POST CARD — FIX BÀI VIẾT BỊ PHÓNG TO
+========================================================= */
+.post-card {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    width: 100%;           /* không cho vượt quá width của center-feed */
+    max-width: 100%;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Header */
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.post-user {
+    font-weight: 600;
+    color: #333;
+}
+
+.post-time {
+    font-size: 13px;
+    color: #777;
+}
+
+/* Content */
+.post-content {
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+/* Ảnh trong post */
+
+
+
+
+.post-actions button:hover {
+    background: #e6e6e6;
+}
+/* FIX AVATAR BỊ PHÓNG TO */
+.avatar-large {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+/* ============================================
+   CREATE POST — GIAO DIỆN ĐẸP CHUẨN FACEBOOK
+============================================ */
+.create-post {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+/* Hàng trên: avatar + input */
+.cp-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.cp-top input {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 35px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    font-size: 15px;
+}
+
+.cp-top input:focus {
+    border-color: var(--gummy-mint);
+    box-shadow: 0 0 0 3px rgba(183,235,214,0.4);
+}
+
+/* ===============================
+   CREATE POST ACTION BUTTONS
+================================ */
+.cp-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;                 /* khoảng cách giữa nút */
+    margin-top: 15px;
+}
+
+.cp-btn {
+    padding: 8px 14px;         /* giảm size */
+    background: #F8F8F8;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: 0.2s;
+    width: auto;               /* KHÔNG kéo dài toàn hàng */
+    flex: none;                /* KHÔNG cho auto stretch */
+    white-space: nowrap;       /* Không xuống dòng */
+}
+
+.cp-btn i {
+    margin-right: 6px;
+}
+
+.cp-btn:hover {
+    background: #FFF3FA;
+    color: var(--gummy-pink);
+}
+
+/* ==========================
+   POST BUTTON – GIẢM CHIỀU RỘNG
+========================== */
+.cp-post-btn {
+    width: 40%;                /* từ full → nhỏ lại */
+    margin: 18px auto 0;       /* căn giữa đẹp */
+    display: block;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 12px;
+    background: var(--gummy-mint);
+}
+
+.cp-post-btn:hover {
+    background: #AEE4CD;
+}
+
+/* ==============================
+   UNIFORM GUMMY IMAGE STYLE
+=================================*/
+.gummy-image {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin: 10px 0;
+    display: block;
+}
+.post-header img,
+.cmt-item img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    object-fit: cover;
+}
+/* ===============================
+   COMMENT INPUT NEW STYLE
+=============================== */
+
+.cmt-add {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 8px 0;
+}
+
+.cmt-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cmt-input-wrapper {
+    flex: 1;
+}
+
+.cmt-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.cmt-input:focus {
+    border-color: var(--gummy-mint);
+    box-shadow: 0 0 0 3px rgba(183,235,214,0.4);
+    background: white;
+}
+
+.cmt-btn {
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: var(--gummy-mint);
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    font-size: 14px;
+    color: #355c50;
+}
+
+.cmt-btn:hover {
+    background: #AEE4CD;
+}
+/* ============================
+   STORY VIEWER POPUP
+============================ */
+.story-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+.story-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.story-inner img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+/* CREATE STORY STYLE */
+.create-story {
+    position: relative;
+    cursor: pointer;
+}
+
+.create-story .add-icon {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 38px;
+    background: var(--gummy-pink);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.create-story span {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.9);
+}
+.privacy-row {
+    margin: 8px 0 4px;
+}
+
+.privacy-select {
+    padding: 6px 10px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+/* ACTIVE NOW */
+.active-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.active-user:hover {
+    background: #f5f5f5;
+}
+
+.active-avatar {
+    position: relative;
+}
+
+.active-avatar img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.online-dot {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    background: #4cd137;   /* xanh online */
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.active-name {
+    font-size: 15px;
+}
+.post-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.post-header-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;        /* ĐẨY icon delete sang phải */
+}
+.reaction-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.reaction-box {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    font-size: 26px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: 0.15s ease;
+    z-index: 50;
+}
+
+.reaction-wrapper:hover .reaction-box {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.reaction-box span {
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.reaction-box span:hover {
+    transform: scale(1.35);
+}
+
+/* Hover mới hiện */
+.reaction-wrapper:hover .reaction-box {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+.post-btn {
+    flex: 1;
+    background: #f7f7f7;
+    border: none;
+    padding: 10px 0;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #444;
+    transition: 0.2s;
+}
+
+.post-btn:hover {
+    background: #eaeaea;
+}
+.post-btn {
+    color: #666; /* màu xám khi chưa like */
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.post-btn.liked {
+    color: #e0245e;   /* màu hồng/đỏ khi đã reaction */
+    font-weight: 600;
+}

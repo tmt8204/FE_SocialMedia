@@ -1,0 +1,2032 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gummy – Messages</title>
+
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ====== FULL HEIGHT LAYOUT ====== */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====== CHAT LAYOUT ====== */
+.layout-premium {
+    width: 100%;
+    height: 100%;
+}
+
+.chat-layout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.chat-list {
+    width: 300px;
+    background: white;
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-list h3 {
+    margin-top: 0;
+    color: #333;
+    flex-shrink: 0;
+}
+
+#chatListContainer {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chat-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 0;
+    transition: background-color 0.2s ease;
+    align-items: center;
+    position: relative;
+}
+
+.chat-item:hover {
+    background: #f0f0f0;
+}
+
+.chat-item.unread {
+    background: #fffbea;
+    border-left: 3px solid #ffa500;
+}
+
+.chat-item.unread .chat-name {
+    font-weight: 600;
+    color: #000;
+}
+
+.chat-item.unread .chat-status {
+    color: #333;
+    font-weight: 500;
+}
+
+.chat-item img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.chat-item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chat-item-info b {
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-item-info p {
+    font-size: 12px;
+    color: #65676b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-status {
+    font-size: 13px;
+    color: #65676b;
+    margin: 2px 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-window {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #c1f0dc;
+    border-radius: 16px 16px 0 0;
+    flex-shrink: 0;
+}
+
+.chat-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.msg {
+    max-width: 60%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+/* Message from OTHER person */
+.msg-left {
+    background: #e5e5e5;
+    align-self: flex-start;
+    border-radius: 16px 16px 16px 4px;
+}
+
+.msg-left.unread {
+    background: #d4edff;
+    border-left: 3px solid #0084ff;
+    font-weight: 500;
+}
+
+/* Message from YOU */
+.msg-right {
+    background: #ff9ec7;
+    color: white;
+    align-self: flex-end;
+    border-radius: 16px 16px 4px 16px;
+    box-shadow: 0 3px 8px rgba(255, 120, 180, 0.25);
+}
+
+.chat-input {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+.chat-input button {
+    padding: 10px 14px;
+    background: #97ebc8;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.chat-input button:hover {
+    background: #7dd9b4;
+}
+
+.chat-input button:active {
+    transform: scale(0.95);
+}
+
+/* Media preview styles */
+.media-preview {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.media-loading {
+    font-size: 12px;
+    color: #999;
+    font-style: italic;
+}
+
+.msg-media {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.msg-video {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+}
+
+/* Unread badge styling */
+.chat-icon-badge {
+    position: relative;
+    display: inline-block;
+}
+
+.unread-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #f02849;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+/* ====== SEEN INDICATOR ====== */
+.msg-seen-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    opacity: 0.8;
+    margin-left: 4px;
+}
+
+.msg-seen-icon {
+    color: #0084ff;
+    font-weight: bold;
+}
+
+/* Seen timestamp for own messages */
+.msg-right .msg-seen-info {
+    font-size: 11px;
+    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 4px;
+}
+
+.msg-left .msg-seen-info {
+    font-size: 11px;
+    opacity: 0.7;
+    color: #65676b;
+    margin-top: 4px;
+}
+
+/* ====== GROUP CHAT STYLES ====== */
+.group-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 0;
+    transition: background-color 0.2s ease;
+    align-items: center;
+    position: relative;
+}
+
+.group-item:hover {
+    background: #f0f0f0;
+}
+
+.group-item img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: #e0e0e0;
+}
+
+.group-item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.group-item-info b {
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.group-item-info p {
+    font-size: 12px;
+    color: #65676b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.group-unread-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #f02849;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.group-unread-badge.zero {
+    display: none !important;
+}
+
+.group-icon-badge {
+    position: relative;
+    display: inline-block;
+}
+
+/* ====== MODAL STYLES ====== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn-primary {
+    background: #97ebc8;
+    color: #333;
+}
+
+.btn-primary:hover {
+    background: #7dd9b4;
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+</style>
+
+</head>
+<body>
+
+<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
+<div class="layout-premium">
+
+
+
+    <!-- ====== CHAT AREA ====== -->
+    <div class="chat-layout">
+
+        <!-- CHAT LIST -->
+        <div class="chat-list">
+            <!-- Tabs: Messages / Groups -->
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button id="messagesTab" class="chat-tab active" onclick="switchToMessages()" style="flex: 1; padding: 8px; background: #97ebc8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Tin nhắn</button>
+                <button id="groupsTab" class="chat-tab" onclick="switchToGroups()" style="flex: 1; padding: 8px; background: #f0f0f0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Nhóm</button>
+            </div>
+
+            <!-- Messages container (1-1 chats) -->
+            <div id="messagesContainer" style="display: block;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; color: #333;">Tin nhắn của bạn</h3>
+                </div>
+                <div id="chatListContainer" style="max-height: 550px; overflow-y: auto;">
+                    <p style="text-align: center; color: #999;">Loading conversations...</p>
+                </div>
+            </div>
+
+            <!-- Groups container -->
+            <div id="groupsContainer" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; color: #333;">Nhóm của bạn</h3>
+                    <button onclick="openCreateGroupModal()" style="padding: 5px 10px; background: #97ebc8; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">+ Mới</button>
+                </div>
+                <div id="groupListContainer" style="max-height: 550px; overflow-y: auto;">
+                    <p style="text-align: center; color: #999;">No groups yet</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- CHAT WINDOW -->
+        <div class="chat-window">
+
+            <div class="chat-header">
+                <img id="chatAvatar">
+                <div>
+                    <b id="chatName"></b>
+                    <p>Online</p>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatBox"></div>
+
+            <div class="chat-input">
+                <input id="msgInput" placeholder="Viết tin nhắn..." onkeydown="if(event.key==='Enter'){event.preventDefault();sendMsg();}">
+                <input type="file" id="mediaInput" style="display: none;">
+                <button type="button" id="uploadBtn" onclick="document.getElementById('mediaInput').click()" title="Upload file"><i class="fas fa-paperclip"></i></button>
+                <button type="button" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+
+        </div>
+
+    </div> <!-- END chat-layout -->
+
+</div> <!-- END layout-premium -->
+
+
+
+<script>
+/* ================================
+   LOAD CURRENT USER (from token/localStorage)
+================================ */
+let currentUser = {
+    userId: localStorage.getItem("gummy_userId") || null,
+    name: localStorage.getItem("gummy_name") || "You",
+    avatar: localStorage.getItem("gummy_avatar") || "https://i.pravatar.cc/100?u=self"
+};
+
+// Try to derive userId from JWT token if not set
+(function ensureUserIdFromToken(){
+    try {
+        const t = (window.api && api.getToken && api.getToken()) || localStorage.getItem('token');
+        if (!currentUser.userId && t) {
+            const parts = t.split('.')
+            if (parts.length === 3) {
+                const payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+                const uid = payload.userId || payload.uid || payload.sub;
+                if (uid) currentUser.userId = Number(uid);
+            }
+        }
+    } catch (e) { console.warn('Cannot parse JWT for userId:', e); }
+})();
+
+// Set header avatar only if element exists (shared-layout may inject later)
+const headerEl = document.getElementById("headerAvatar");
+if (headerEl) {
+    headerEl.style.backgroundImage = `url('${currentUser.avatar}')`;
+}
+
+let currentChat = null;
+let currentChatUserId = null;
+let currentGroupId = null;
+let currentChatMode = 'direct'; // 'direct' or 'group'
+let wsConnection = null;
+let messageMap = new Map(); // Cache tin nhắn trong cuộc hội thoại hiện tại
+let unreadCount = 0; // Track unread message count
+let refreshInterval = null; // Auto-refresh seen status
+let mediaChunkBuffer = new Map(); // Buffer for reconstructing media from chunks
+let markedAsReadMessages = new Set(); // Track messages already marked as read to prevent duplicates
+/* ====================================
+   MEDIA CONSTANTS
+==================================== */
+const MEDIA_CONFIG = {
+    MAX_FILE_SIZE: 50 * 1024 * 1024, // 50MB
+    SUPPORTED_IMAGES: ['image/jpeg', 'image/png', 'image/gif'],
+    SUPPORTED_VIDEOS: ['video/mp4', 'video/webm'],
+    CHUNK_SIZE: 64 * 1024 // 64KB chunks for streaming
+};
+
+let pendingMediaFile = null;
+
+
+/* ====================================
+   FILE UPLOAD HANDLER
+==================================== */
+document.getElementById('mediaInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+        console.log('No file selected');
+        return;
+    }
+
+    console.log('File selected:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+    });
+
+    // Validate file size
+    if (file.size > MEDIA_CONFIG.MAX_FILE_SIZE) {
+        alert(`File too large! Maximum size is ${MEDIA_CONFIG.MAX_FILE_SIZE / 1024 / 1024}MB`);
+        e.target.value = '';
+        return;
+    }
+
+    // Determine file type
+    const isImage = MEDIA_CONFIG.SUPPORTED_IMAGES.includes(file.type);
+    const isVideo = MEDIA_CONFIG.SUPPORTED_VIDEOS.includes(file.type);
+    const isFile = !isImage && !isVideo; // Other file types
+
+    try {
+        const fileType = isImage ? 'image' : isVideo ? 'video' : 'file';
+        debugLog('📁 File selected:', {name: file.name, type: fileType, size: file.size});
+        
+        // Show preview for images/videos only
+        if (isImage || isVideo) {
+            await showMediaPreview(file, isImage);
+        } else {
+            // For other files, show file info
+            const container = document.getElementById('chatBox');
+            const fileInfo = document.createElement('div');
+            fileInfo.className = 'media-preview';
+            fileInfo.style.margin = '10px 0';
+            fileInfo.style.padding = '10px';
+            fileInfo.style.background = '#f0f0f0';
+            fileInfo.style.borderRadius = '8px';
+            fileInfo.innerHTML = `
+                <div style="font-weight: bold;">📎 ${file.name}</div>
+                <div style="font-size: 12px; color: #666;">Size: ${(file.size / 1024).toFixed(2)} KB</div>
+            `;
+            container.appendChild(fileInfo);
+        }
+        
+        // Store file for sending
+        pendingMediaFile = {
+            file: file,
+            type: isImage ? 'image' : isVideo ? 'video' : 'file',
+            mimeType: file.type
+        };
+        
+        debugLog('✅ File ready to send:', pendingMediaFile.type);
+        
+        // Auto-focus input for message
+        document.getElementById('msgInput').focus();
+        
+    } catch (err) {
+        debugLog('❌ Error processing file:', err.message);
+        alert('Error processing file: ' + err.message);
+        e.target.value = '';
+        pendingMediaFile = null;
+    }
+}, false);
+
+
+/* ====================================
+   SHOW MEDIA PREVIEW
+==================================== */
+async function showMediaPreview(file, isImage) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = async (e) => {
+            const container = document.getElementById('chatBox');
+            
+            if (isImage) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'media-preview';
+                img.style.margin = '10px 0';
+                container.appendChild(img);
+            } else {
+                const video = document.createElement('video');
+                video.src = e.target.result;
+                video.className = 'media-preview';
+                video.controls = true;
+                video.style.margin = '10px 0';
+                container.appendChild(video);
+            }
+            
+            container.scrollTop = container.scrollHeight;
+            resolve();
+        };
+        
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+
+/* ====================================
+   SEND MEDIA VIA WEBSOCKET
+==================================== */
+async function sendMediaViaWebSocket(toUserId, mediaData) {
+    if (!wsConnection || wsConnection.readyState !== WebSocket.OPEN) {
+        console.warn("WebSocket not connected for media");
+        return false;
+    }
+
+    try {
+        if (!pendingMediaFile) {
+            console.warn("No pending media file");
+            return false;
+        }
+
+        // Extract base64 data (remove data URL prefix if exists)
+        let base64Data = mediaData;
+        if (mediaData.includes(',')) {
+            base64Data = mediaData.split(',')[1];
+        }
+
+        // For large files, send in chunks
+        const CHUNK_SIZE = MEDIA_CONFIG.CHUNK_SIZE;
+        const totalChunks = Math.ceil(base64Data.length / CHUNK_SIZE);
+        const messageId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        console.log(`Sending ${pendingMediaFile.type} via WebSocket:`, {
+            messageId,
+            totalChunks,
+            base64Length: base64Data.length,
+            fileName: pendingMediaFile.file.name
+        });
+        
+        for (let i = 0; i < totalChunks; i++) {
+            const start = i * CHUNK_SIZE;
+            const end = Math.min(start + CHUNK_SIZE, base64Data.length);
+            const chunk = base64Data.substring(start, end);
+            
+            const payload = {
+                type: 'MEDIA_CHUNK',
+                messageId: messageId,
+                toUserId: toUserId,
+                chunk: chunk,
+                chunkIndex: i,
+                totalChunks: totalChunks,
+                mediaType: pendingMediaFile.type,
+                mimeType: pendingMediaFile.mimeType,
+                fileName: pendingMediaFile.file.name
+            };
+            
+            wsConnection.send(JSON.stringify(payload));
+            console.log(`Sent chunk ${i + 1}/${totalChunks}`);
+            
+            // Small delay between chunks to avoid overwhelming the connection
+            await new Promise(resolve => setTimeout(resolve, 5));
+        }
+        
+        console.log(`Media sending complete via WebSocket (${totalChunks} chunks)`);
+        return true;
+    } catch (err) {
+        console.error('Error sending media via WebSocket:', err);
+        return false;
+    }
+}
+
+
+/* ====================================
+   DEBUG LOG HELPER
+==================================== */
+function debugLog(msg, data = null) {
+    console.log(msg, data);
+    // Save to localStorage for debugging after reload
+    let logs = JSON.parse(localStorage.getItem('debug_logs') || '[]');
+    logs.push({
+        time: new Date().toISOString(),
+        msg: msg,
+        data: data
+    });
+    // Keep last 50 logs
+    if (logs.length > 50) logs = logs.slice(-50);
+    localStorage.setItem('debug_logs', JSON.stringify(logs));
+}
+
+function showDebugLogs() {
+    let logs = JSON.parse(localStorage.getItem('debug_logs') || '[]');
+    console.log('=== DEBUG LOGS ===');
+    logs.forEach(log => {
+        console.log(`[${log.time}] ${log.msg}`, log.data || '');
+    });
+    console.log('=================');
+}
+
+// Show debug logs on page load
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        showDebugLogs();
+    }, 100);
+});
+
+/* ====================================
+   SEND MEDIA VIA REST API (Fallback)
+==================================== */
+async function sendMediaViaAPI(toUserId, mediaData) {
+    try {
+        if (!pendingMediaFile) {
+            throw new Error('No media file selected');
+        }
+
+        const formData = new FormData();
+        formData.append('toUserId', toUserId);
+        formData.append('file', pendingMediaFile.file);
+        formData.append('mediaType', pendingMediaFile.type);
+        
+        const baseUrl = (api && api.baseUrl ? api.baseUrl : (window.BACKEND_URL || 'http://localhost:8080'));
+        const endpoint = baseUrl.endsWith('/') ? baseUrl + 'api/chat/send-media' : baseUrl + '/api/chat/send-media';
+        const token = (window.api && api.getToken && api.getToken()) || localStorage.getItem('token');
+        
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        debugLog('🚀 Sending media via REST API to:', endpoint);
+        debugLog('📄 File info:', {
+            name: pendingMediaFile.file.name,
+            size: pendingMediaFile.file.size,
+            type: pendingMediaFile.file.type,
+            mediaType: pendingMediaFile.type,
+            toUserId: toUserId
+        });
+        
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            body: formData
+        });
+        
+        debugLog('📥 API response status:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            debugLog('❌ REST API error response:', response.status + ' ' + errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const result = await response.json();
+        debugLog('✅ REST API response:', result);
+        
+        if (result) {
+            addMessageToUI(result);
+        }
+        return true;
+    } catch (err) {
+        debugLog('❌ Error sending media via API:', err.message);
+        throw err;
+    }
+}
+
+
+/* ====================================
+   UPDATE UNREAD BADGE
+==================================== */
+async function updateUnreadBadge() {
+    try {
+        const count = await ChatAPI.getUnreadCount();
+        unreadCount = count || 0;
+        
+        // Find or create badge element on chat icon
+        let chatIconContainer = document.querySelector('.chat-icon-badge');
+        if (!chatIconContainer) {
+            // Look for the chat icon in header and wrap it
+            const chatLink = document.querySelector('a[href="chat.html"]');
+            if (chatLink) {
+                const icon = chatLink.querySelector('i');
+                if (icon && !icon.parentElement.classList.contains('chat-icon-badge')) {
+                    const wrapper = document.createElement('span');
+                    wrapper.className = 'chat-icon-badge';
+                    icon.parentElement.insertBefore(wrapper, icon);
+                    wrapper.appendChild(icon);
+                    chatIconContainer = wrapper;
+                }
+            }
+        }
+        
+        // Update or create badge
+        let badge = chatIconContainer ? chatIconContainer.querySelector('.unread-badge') : null;
+        if (chatIconContainer && unreadCount > 0) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'unread-badge';
+                chatIconContainer.appendChild(badge);
+            }
+            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        } else if (badge) {
+            badge.remove();
+        }
+    } catch (err) {
+        console.error('Error updating unread badge:', err);
+    }
+}
+
+
+/* ====================================
+   WEBSOCKET CONNECTION
+==================================== */
+function connectWebSocket() {
+    debugLog('🔗 connectWebSocket called');
+    const token = (window.api && api.getToken && api.getToken()) || localStorage.getItem('token');
+    if (!token) {
+        debugLog("⚠️ JWT token not found. WebSocket skipped.");
+        return;
+    }
+
+    // Build WS URL from backend base URL to avoid host mismatch
+    let wsUrl;
+    try {
+        const base = api && api.baseUrl ? api.baseUrl : (window.BACKEND_URL || 'http://localhost:8080');
+        const u = new URL(base);
+        const wsProtocol = u.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${wsProtocol}//${u.host}/ws/chat?token=${encodeURIComponent(token)}`;
+    } catch (e) {
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${wsProtocol}//${window.location.host}/ws/chat?token=${encodeURIComponent(token)}`;
+    }
+
+    try {
+        wsConnection = new WebSocket(wsUrl);
+
+        wsConnection.onopen = () => {
+            debugLog("✅ WebSocket connected");
+        };
+
+        wsConnection.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                debugLog('📨 WebSocket message received, type:', data.type);
+                
+                // Handle media chunks
+                if (data.type === 'MEDIA_CHUNK') {
+                    const messageId = data.messageId;
+                    
+                    // Initialize buffer for this message if needed
+                    if (!mediaChunkBuffer.has(messageId)) {
+                        mediaChunkBuffer.set(messageId, {
+                            chunks: [],
+                            totalChunks: data.totalChunks,
+                            mediaType: data.mediaType,
+                            mimeType: data.mimeType,
+                            fileName: data.fileName,
+                            sender: data.sender,
+                            receiver: data.receiver,
+                            sentAt: data.sentAt
+                        });
+                    }
+                    
+                    const bufferData = mediaChunkBuffer.get(messageId);
+                    bufferData.chunks[data.chunkIndex] = data.chunk;
+                    
+                    // Check if all chunks received
+                    if (bufferData.chunks.length === bufferData.totalChunks) {
+                        // Reconstruct media
+                        const fullData = bufferData.chunks.join('');
+                        const mediaUrl = `data:${bufferData.mimeType};base64,${fullData}`;
+                        
+                        // Create message object
+                        const msg = {
+                            messageId: messageId,
+                            sender: bufferData.sender,
+                            receiver: bufferData.receiver,
+                            sentAt: bufferData.sentAt,
+                            content: '',
+                            status: true,
+                            readAt: new Date().toISOString()
+                        };
+                        
+                        if (bufferData.mediaType === 'image') {
+                            msg.imageUrl = mediaUrl;
+                        } else {
+                            msg.videoUrl = mediaUrl;
+                        }
+                        
+                        // Update unread count
+                        if (msg.receiver.userId === currentUser.userId && msg.sender.userId !== currentChatUserId) {
+                            unreadCount++;
+                            updateUnreadBadge();
+                        }
+                        
+                        // Add to UI
+                        if (currentChatUserId && 
+                            (msg.sender.userId === currentChatUserId || 
+                             msg.receiver.userId === currentChatUserId)) {
+                            addMessageToUI(msg);
+                            
+                            // Mark read
+                            if (msg.receiver.userId === currentUser.userId) {
+                                ChatAPI.markRead(msg.sender.userId);
+                            }
+                        }
+                        
+                        // Clean up buffer
+                        mediaChunkBuffer.delete(messageId);
+                    }
+                    return;
+                }
+
+                // Handle GROUP_MESSAGE
+                if (data.type === 'GROUP_MESSAGE') {
+                    const msg = data.data;
+                    const groupId = data.groupId;
+                    
+                    debugLog('📨 GROUP_MESSAGE received for group:', groupId);
+                    
+                    // Add to UI if viewing this group
+                    if (currentChatMode === 'group' && currentGroupId === groupId) {
+                        addMessageToUI(msg);
+                    }
+                    
+                    return;
+                }
+
+                // Handle GROUP_UNREAD_UPDATE
+                if (data.type === 'GROUP_UNREAD_UPDATE') {
+                    const groupId = data.groupId;
+                    const unreadCount = data.unreadCount;
+                    
+                    debugLog('📬 GROUP_UNREAD_UPDATE for group:', groupId, 'count:', unreadCount);
+                    
+                    // Update badge in UI
+                    const badge = document.querySelector(`.group-unread-badge[data-group-id="${groupId}"]`);
+                    if (badge) {
+                        badge.textContent = unreadCount;
+                        if (unreadCount === 0) {
+                            badge.classList.add('zero');
+                            badge.style.display = 'none';
+                        } else {
+                            badge.classList.remove('zero');
+                            badge.style.display = 'flex';
+                        }
+                    }
+                    
+                    return;
+                }
+
+                // Handle GROUP_MESSAGE_READ (message marked as read)
+                if (data.type === 'GROUP_MESSAGE_READ') {
+                    const messageId = data.messageId;
+                    const readAt = data.readAt;
+                    const senderId = data.senderId;
+                    
+                    debugLog('✓✓ GROUP_MESSAGE_READ for message:', messageId, 'sender:', senderId);
+                    
+                    // Update the message in UI to show it's been read
+                    const msgElement = document.querySelector(`[data-message-id="${messageId}"]`);
+                    if (msgElement) {
+                        // Remove unread class/styling
+                        msgElement.classList.remove('unread');
+                        
+                        // Remove old seen info if exists
+                        const oldSeenInfo = msgElement.querySelector('.msg-seen-info');
+                        if (oldSeenInfo) {
+                            oldSeenInfo.remove();
+                        }
+                        
+                        // Add/update seen info (show for all users so they know message was read)
+                        const readAtStr = readAt ? new Date(readAt).toLocaleTimeString('en-US', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        }) : 'Seen';
+                        const newSeenInfo = `<div class="msg-seen-info"><span class="msg-seen-icon">✓✓</span> ${readAtStr}</div>`;
+                        msgElement.innerHTML += newSeenInfo;
+                        
+                        // Update message map
+                        if (messageMap.has(messageId)) {
+                            const cachedMsg = messageMap.get(messageId);
+                            cachedMsg.status = true;
+                            cachedMsg.readAt = readAt;
+                        }
+                    }
+                    
+                    return;
+                }
+                
+                if (data.type === 'NEW_MESSAGE') {
+                    const msg = data.data;
+                    
+                    // Increment unread if message is not for current chat
+                    if (msg.receiver.userId === currentUser.userId && msg.sender.userId !== currentChatUserId) {
+                        unreadCount++;
+                        updateUnreadBadge();
+                    }
+                    
+                    // Update chat item in list (real-time)
+                    const otherUserId = msg.sender.userId === currentUser.userId ? msg.receiver.userId : msg.sender.userId;
+                    const chatItem = document.querySelector(`.chat-item[data-user-id="${otherUserId}"]`);
+                    const statusEl = document.getElementById(`chat-status-${otherUserId}`);
+                    
+                    if (statusEl) {
+                        const senderName = msg.sender.userId === currentUser.userId ? 'You: ' : '';
+                        const preview = msg.content || '[Image]';
+                        const displayText = senderName + preview.substring(0, 40) + (preview.length > 40 ? '...' : '');
+                        statusEl.textContent = displayText;
+                    }
+                    
+                    // Add unread visual indicator if message is from someone else and not current chat
+                    if (msg.receiver.userId === currentUser.userId && msg.sender.userId !== currentChatUserId && chatItem) {
+                        chatItem.classList.add('unread');
+                        console.log('Added unread class to chat item:', otherUserId);
+                    }
+                    
+                    // Thêm tin nhắn vào cache và UI nếu đang xem cuộc hội thoại
+                    if (currentChatUserId && 
+                        (msg.sender.userId === currentChatUserId || 
+                         msg.receiver.userId === currentChatUserId)) {
+                        addMessageToUI(msg);
+                        
+                        // Mark read nếu là tin từ người khác - call bulk mark read
+                        if (msg.receiver.userId === currentUser.userId) {
+                            ChatAPI.markRead(msg.sender.userId).then(() => {
+                                // Cập nhật badge sau khi mark read
+                                updateUnreadBadge();
+                                // Xóa highlight unread
+                                const msgEl = document.querySelector(`[data-message-id="${msg.messageId}"]`);
+                                if (msgEl) {
+                                    msgEl.classList.remove('unread');
+                                }
+                                // Refresh seen status sẽ handle via interval
+                            });
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Error parsing WebSocket message:', err);
+            }
+        };
+
+        wsConnection.onerror = (err) => {
+            debugLog('❌ WebSocket error:', err);
+        };
+
+        wsConnection.onclose = () => {
+            debugLog("⚠️ WebSocket disconnected");
+            // Retry connection sau 3 giây
+            setTimeout(connectWebSocket, 3000);
+        };
+    } catch (err) {
+        debugLog('❌ Error connecting to WebSocket:', err.message);
+    }
+}
+
+function sendWebSocketMessage(toUserId, content, imageUrl = '') {
+    if (!wsConnection || wsConnection.readyState !== WebSocket.OPEN) {
+        console.warn("WebSocket not connected. Falling back to REST API.");
+        return false;
+    }
+
+    const payload = {
+        toUserId: toUserId,
+        content: content,
+        imageUrl: imageUrl
+    };
+
+    wsConnection.send(JSON.stringify(payload));
+    return true;
+}
+
+
+/* ====================================
+   OPEN CHAT
+==================================== */
+function openChat(userId, name, avatar) {
+    currentChatUserId = userId;
+    currentGroupId = null;
+    currentChatMode = 'direct';
+    currentChat = name;
+
+    document.getElementById("chatName").innerText = name;
+    const avatarImg = document.getElementById("chatAvatar");
+    avatarImg.src = avatar;
+    avatarImg.onerror = function() {
+        this.src = getDefaultAvatarUrl();
+    };
+    
+    messageMap.clear();
+    markedAsReadMessages.clear(); // Clear tracked messages when switching chats
+    document.getElementById("chatBox").innerHTML = '<p style="text-align: center; color: #999;">Loading...</p>';
+    
+    // Clear existing refresh interval
+    if (refreshInterval) clearInterval(refreshInterval);
+    
+    // Lấy lịch sử chat từ backend
+    loadMessagesFromAPI(userId);
+    
+    // Auto-refresh seen status every 1 second
+    refreshInterval = setInterval(() => {
+        if (currentChatUserId === userId) {
+            refreshMessageStatus(userId);
+        }
+    }, 1000);
+}
+
+
+/* ====================================
+   LOAD MESSAGES FROM API
+==================================== */
+async function loadMessagesFromAPI(userId) {
+    try {
+        const messages = await ChatAPI.getConversation(userId);
+        
+        let chatBox = document.getElementById("chatBox");
+        chatBox.innerHTML = "";
+        messageMap.clear();
+        
+        if (!Array.isArray(messages) || messages.length === 0) {
+            chatBox.innerHTML = '<p style="text-align: center; color: #999;">No messages yet</p>';
+            // Vẫn đánh dấu đã đọc (clear unread count cho conversation này)
+            await ChatAPI.markRead(userId);
+            await updateUnreadBadge();
+            return;
+        }
+
+        // Thêm các tin nhắn vào UI
+        messages.forEach(msg => {
+            addMessageToUI(msg);
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        // Đánh dấu đã đọc tất cả tin nhắn trong conversation
+        console.log('Calling ChatAPI.markRead with userId:', userId);
+        const result = await ChatAPI.markRead(userId);
+        console.log('markRead result:', result);
+        
+        // Cập nhật badge và chat list ngay lập tức
+        await updateUnreadBadge();
+        updateChatItemReadStatus(userId);
+    } catch (err) {
+        console.error('Error loading messages:', err);
+        document.getElementById("chatBox").innerHTML = 
+            '<p style="text-align: center; color: red;">Error loading messages</p>';
+    }
+}
+
+
+/* ====================================
+   REFRESH MESSAGE STATUS (for seen indicators)
+==================================== */
+async function refreshMessageStatus(userId) {
+    try {
+        debugLog('🔄 refreshMessageStatus called for userId:', userId);
+        const messages = await ChatAPI.getConversation(userId);
+        if (!Array.isArray(messages)) {
+            debugLog('⚠️ Messages not array, returning');
+            return;
+        }
+        debugLog('🔄 Got', messages.length, 'messages in refreshMessageStatus');
+        
+        // Update message map with new status/readAt data
+        messages.forEach(msg => {
+            if (messageMap.has(msg.messageId)) {
+                const cachedMsg = messageMap.get(msg.messageId);
+                // Check if status changed (became seen)
+                const wasUnseen = !cachedMsg.status && msg.status;
+                if (wasUnseen) {
+                    cachedMsg.status = msg.status;
+                    cachedMsg.readAt = msg.readAt;
+                    
+                    // Update UI for this message
+                    const msgEl = document.querySelector(`[data-message-id="${msg.messageId}"]`);
+                    if (msgEl && cachedMsg.sender.userId === currentUser.userId) {
+                        // Add seen info if not already there
+                        let seenInfoEl = msgEl.querySelector('.msg-seen-info');
+                        if (!seenInfoEl && msg.readAt) {
+                            const seenAtStr = new Date(msg.readAt).toLocaleTimeString('en-US', { 
+                                hour: '2-digit', 
+                                minute: '2-digit' 
+                            });
+                            const seenInfo = document.createElement('div');
+                            seenInfo.className = 'msg-seen-info';
+                            seenInfo.innerHTML = `<span class="msg-seen-icon">✓✓</span> ${seenAtStr}`;
+                            msgEl.appendChild(seenInfo);
+                        }
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        // Silently fail - refresh is optional
+        console.debug('Message status refresh failed:', err);
+    }
+}
+
+
+/* ====================================
+   UPDATE CHAT ITEM READ STATUS
+==================================== */
+function updateChatItemReadStatus(userId) {
+    // Xóa visual indicator "unread" cho chat item này
+    const chatItem = document.querySelector(`.chat-item[data-user-id="${userId}"]`);
+    if (chatItem) {
+        chatItem.classList.remove('unread');
+        const badge = chatItem.querySelector('.unread-count');
+        if (badge) {
+            badge.remove();
+        }
+        console.log('Removed unread class from chat item:', userId);
+    }
+}
+
+/* ====================================
+   ADD MESSAGE TO UI
+==================================== */
+function addMessageToUI(msg) {
+    try {
+        debugLog('📢 addMessageToUI called with msg:', {id: msg.messageId, sender: msg.sender?.userId});
+        // Normalize message id across different API shapes
+        const normalizedId = msg.messageId || msg.id || msg.message_id;
+        if (!normalizedId) {
+            debugLog('⚠️ Message missing id, skipping dedupe');
+        } else {
+            msg.messageId = normalizedId;
+        }
+
+        // Tránh duplicate messages (use normalized id)
+        if (normalizedId && messageMap.has(normalizedId)) {
+            debugLog('📢 Message already in map, skipping');
+            return;
+        }
+        if (normalizedId) {
+            messageMap.set(normalizedId, msg);
+        }
+
+    let chatBox = document.getElementById("chatBox");
+    
+    // Clear "No messages yet" message
+    if (chatBox.innerHTML.includes("No messages yet")) {
+        chatBox.innerHTML = "";
+    }
+
+    const isOwn = msg.sender.userId === currentUser.userId;
+    const isUnread = !msg.status && !isOwn;
+    const isSeen = msg.status && isOwn;
+    
+    const timeStr = new Date(msg.sentAt).toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+    
+    // Build seen info
+    let seenInfo = '';
+    if (isSeen) {
+        const seenAtStr = msg.readAt ? new Date(msg.readAt).toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        }) : 'Seen';
+        seenInfo = `<div class="msg-seen-info"><span class="msg-seen-icon">✓✓</span> ${seenAtStr}</div>`;
+    }
+
+    // Build media/text content without duplicating text
+    let mediaContent = '';
+    let contentHtml = '';
+
+    // Helper: convert relative URL to full backend URL
+    function getFullMediaUrl(url) {
+        if (!url) return url;
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url; // Already full URL
+        }
+        if (url.startsWith('data:')) {
+            return url; // Data URL, keep as is
+        }
+        // Relative URL - convert to backend URL
+        const backendUrl = (window.api && api.baseUrl) || (window.BACKEND_URL || 'http://localhost:8080');
+        return backendUrl.replace(/\/$/, '') + url;
+    }
+
+    // For files: extract filename from content if available
+    let isFileMessage = msg.content && msg.content.startsWith('[FILE]');
+    
+    if (msg.imageUrl && !isFileMessage) {
+        const fullUrl = getFullMediaUrl(msg.imageUrl);
+        if (fullUrl.startsWith('data:') || fullUrl.includes('base64')) {
+            mediaContent = `<img src="${fullUrl}" class="msg-media" alt="image">`;
+        } else {
+            const fallbackUrl = getDefaultAvatarUrl();
+            mediaContent = `<img src="${fullUrl}" class="msg-media" alt="image" onerror="this.src='${fallbackUrl}'">`;
+        }
+    } else if (msg.videoUrl && !isFileMessage) {
+        const fullUrl = getFullMediaUrl(msg.videoUrl);
+        if (fullUrl.startsWith('data:') || fullUrl.includes('base64')) {
+            mediaContent = `<video controls class="msg-video"><source src="${fullUrl}" type="video/mp4"></video>`;
+        } else {
+            mediaContent = `<video controls class="msg-video"><source src="${fullUrl}" type="video/mp4"></video>`;
+        }
+    }
+
+    if (!mediaContent && msg.content) {
+        // Check if content is a file reference
+        if (msg.content.startsWith('[FILE]')) {
+            const fileName = msg.content.replace('[FILE] ', '');
+            const fullUrl = getFullMediaUrl(msg.imageUrl);
+            if (fullUrl) {
+                mediaContent = `
+                    <a href="${fullUrl}" download="${fileName}" style="display: inline-block; padding: 10px 14px; background: #007bff; color: white; border-radius: 8px; text-decoration: none; margin: 5px 0;">
+                        📥 ${fileName}
+                    </a>
+                `;
+            }
+        } else {
+            contentHtml = `<div class="msg-text">${msg.content}</div>`;
+        }
+    }
+
+    const messageContent = mediaContent || contentHtml || '[Media]';
+    
+    // Build sender info for group messages (show name only if not own message)
+    let senderInfo = '';
+    if (currentChatMode === 'group' && !isOwn) {
+        const senderName = msg.sender.userName || msg.sender.username || msg.sender.displayName || `User ${msg.sender.userId}`;
+        senderInfo = `<div class="msg-sender-info" style="font-size: 12px; font-weight: 600; color: #0084ff; margin-bottom: 4px;">${senderName}</div>`;
+    }
+    
+    const msgHTML = `
+        <div class="msg ${isOwn ? "msg-right" : "msg-left"} ${isUnread ? "unread" : ""}" data-message-id="${msg.messageId || ''}">
+            ${senderInfo}
+            ${messageContent}
+            <small style="opacity: 0.7; display: block; margin-top: 4px;">${timeStr}</small>
+            ${seenInfo}
+        </div>
+    `;
+
+        chatBox.innerHTML += msgHTML;
+        
+        // Auto-mark unread group messages as read (only if from other users)
+        if (currentChatMode === 'group' && isUnread && msg.messageId && !markedAsReadMessages.has(msg.messageId)) {
+            markedAsReadMessages.add(msg.messageId); // Mark as being processed to prevent duplicate calls
+            
+            setTimeout(() => {
+                // Double-check message is still unread before making API call
+                const cachedMsg = messageMap.get(msg.messageId);
+                if (cachedMsg && !cachedMsg.status) {
+                    GroupAPI.markGroupMessageAsRead(msg.messageId)
+                        .catch(err => {
+                            console.error('Error marking message as read:', err);
+                            markedAsReadMessages.delete(msg.messageId); // Remove from set if failed
+                        });
+                }
+            }, 100);
+        }
+        
+        chatBox.scrollTop = chatBox.scrollHeight;
+        debugLog('✅ Message added to UI successfully');
+    } catch (err) {
+        debugLog('❌ Error in addMessageToUI:', err.message);
+        console.error('Error in addMessageToUI:', err);
+    }
+}
+
+
+/* ====================================
+   SEND MESSAGE
+==================================== */
+async function sendMsg() {
+    if (!currentChatUserId) return;
+
+    let input = document.getElementById("msgInput");
+    let text = input.value.trim();
+    
+    if (!text && !pendingMediaFile) {
+        debugLog('❌ No content and no media to send');
+        return;
+    }
+
+    input.disabled = true;
+    const uploadBtn = document.getElementById('uploadBtn');
+    if (uploadBtn) uploadBtn.disabled = true;
+
+    try {
+        if (pendingMediaFile) {
+            debugLog('📸 Sending media file:', pendingMediaFile.file.name);
+            // Send media via REST API (simpler, more reliable than WebSocket chunking)
+            await sendMediaViaAPI(currentChatUserId, null);
+            
+            // Clear UI
+            input.value = "";
+            pendingMediaFile = null;
+            document.getElementById('mediaInput').value = '';
+            // Remove any preview elements appended earlier
+            document.querySelectorAll('.media-preview').forEach(el => el.remove());
+            debugLog('✅ Media sent successfully');
+        } else {
+            // Send text message only
+            debugLog('📝 Sending text message to user:', currentChatUserId);
+            const wsSuccess = sendWebSocketMessage(currentChatUserId, text, '');
+            
+            if (!wsSuccess) {
+                debugLog('🌐 WebSocket failed, using REST API for text');
+                const result = await ChatAPI.sendMessage(currentChatUserId, text, '');
+                if (result) {
+                    addMessageToUI(result);
+                }
+            }
+            
+            input.value = "";
+        }
+    } catch (err) {
+        debugLog('❌ Error in sendMsg:', err.message);
+        alert('Failed to send: ' + err.message);
+    } finally {
+        input.disabled = false;
+        if (uploadBtn) uploadBtn.disabled = false;
+        input.focus();
+    }
+}
+
+
+/* ====================================
+   INITIALIZE ON PAGE LOAD
+==================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    // Init chat-specific unread badge
+    if (typeof initUnreadBadgeOnChatPage === 'function') {
+        initUnreadBadgeOnChatPage();
+    }
+    connectWebSocket();
+    loadChatList();
+});
+
+// Clear refresh interval when page unloads
+window.addEventListener('beforeunload', () => {
+    debugLog('⚠️ beforeunload triggered!');
+    if (refreshInterval) clearInterval(refreshInterval);
+});
+
+// Track unload
+window.addEventListener('unload', () => {
+    debugLog('⚠️ unload triggered!');
+});
+
+// Track all navigations
+window.addEventListener('popstate', () => {
+    debugLog('⚠️ popstate triggered (back/forward)!');
+});
+
+// Intercept location changes
+const originalReplace = window.location.replace;
+const originalAssign = window.location.assign;
+window.location.replace = function(url) {
+    debugLog('⚠️ location.replace() called with:', url);
+    return originalReplace.call(window.location, url);
+};
+window.location.assign = function(url) {
+    debugLog('⚠️ location.assign() called with:', url);
+    return originalAssign.call(window.location, url);
+};
+
+// Global error handler
+window.addEventListener('error', (e) => {
+    debugLog('❌ Global error:', e.message);
+});
+
+// Unhandled rejection
+window.addEventListener('unhandledrejection', (e) => {
+    debugLog('❌ Unhandled rejection:', e.reason);
+});
+
+/* ====================================
+   LOAD CHAT LIST (Friends)
+==================================== */
+async function loadChatList() {
+    try {
+        debugLog('📋 loadChatList called');
+        // Lấy danh sách bạn bè
+        const friends = await api.friends.getFriendsList();
+        debugLog('📋 Got', friends?.length, 'friends from API');
+        const container = document.getElementById("chatListContainer");
+        
+        if (!friends || friends.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999;">No friends yet</p>';
+            return;
+        }
+
+        container.innerHTML = friends
+            .map(friend => {
+                const avatarUrl = api.getAvatarUrl(friend.avatarUrl);
+                const displayName = friend.displayName || friend.username || `User ${friend.userId}`;
+                const fallbackUrl = getDefaultAvatarUrl();
+                return `
+                    <div class="chat-item" data-user-id="${friend.userId}" onclick="openChat(${friend.userId}, '${displayName}', '${avatarUrl}')">
+                        <img src="${avatarUrl}" alt="${displayName}" onerror="this.src='${fallbackUrl}'">
+                        <div class="chat-item-info">
+                            <b class="chat-name">${displayName}</b>
+                            <p class="chat-status" id="chat-status-${friend.userId}">No messages yet</p>
+                        </div>
+                    </div>
+                `;
+            })
+            .join("");
+
+        // Load preview tin nhắn mới nhất cho mỗi friend
+        friends.forEach(friend => {
+            ChatAPI.getConversation(friend.userId)
+                .then(msgs => {
+                    const lastMsg = msgs && msgs.length > 0 ? msgs[msgs.length - 1] : null;
+                    const statusEl = document.getElementById(`chat-status-${friend.userId}`);
+                    const chatItem = document.querySelector(`.chat-item[data-user-id="${friend.userId}"]`);
+                    
+                    // Kiểm tra xem có tin nhắn chưa đọc từ friend này không
+                    const hasUnread = msgs && msgs.some(msg => 
+                        !msg.status && msg.sender.userId === friend.userId && msg.receiver.userId === currentUser.userId
+                    );
+                    
+                    if (hasUnread && chatItem) {
+                        chatItem.classList.add('unread');
+                    } else if (chatItem) {
+                        chatItem.classList.remove('unread');
+                    }
+                    
+                    if (lastMsg) {
+                        const senderName = lastMsg.sender.userId === currentUser.userId ? 'Bạn: ' : '';
+                        const preview = lastMsg.content || '[Image]';
+                        const displayText = senderName + preview.substring(0, 40) + (preview.length > 40 ? '...' : '');
+                        statusEl.textContent = displayText;
+                    } else {
+                        statusEl.textContent = 'Chưa có tin nhắn';
+                    }
+                })
+                .catch(() => {
+                    const statusEl = document.getElementById(`chat-status-${friend.userId}`);
+                    statusEl.textContent = 'Chưa có tin nhắn';
+                });
+        });
+    } catch (err) {
+        console.error('Error loading chat list:', err);
+        document.getElementById("chatListContainer").innerHTML = 
+            '<p style="text-align: center; color: red;">Error loading conversations</p>';
+    }
+}
+</script>
+
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/api/api.users.js"></script>
+<script src="js/api/api.friends.js"></script>
+<script src="js/api/api.chat.js"></script>
+<script src="js/api/api.media.js"></script>
+<script src="js/api/api.group.js"></script>
+<script src="js/shared-layout.js"></script>
+
+<!-- Create Group Modal -->
+<div id="createGroupModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeCreateGroupModal()">&times;</button>
+        <div class="modal-header">Create New Group</div>
+        <div class="form-group">
+            <label>Group Name</label>
+            <input type="text" id="groupNameInput" placeholder="Nhập tên nhóm" />
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea id="groupDescriptionInput" placeholder="Mô tả (tùy chọn)"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Add Friends (optional)</label>
+            <input type="text" id="groupMemberSearch" placeholder="Tìm bạn bè" style="margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px;">
+                    <input type="checkbox" id="selectAllGroupMembers"> Select all
+                </label>
+                <span id="groupMembersCount" style="font-size:12px; color:#666;">0 selected</span>
+            </div>
+            <div id="groupFriendsList" style="max-height:200px; overflow:auto; border:1px solid #eee; border-radius:8px; padding:8px;">
+                <p style="color:#999; margin:0;">Loading friends…</p>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-secondary" onclick="closeCreateGroupModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="createNewGroup()">Create</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ====================================
+   GROUP CHAT FUNCTIONS
+==================================== */
+
+/**
+ * Switch to Messages tab
+ */
+function switchToMessages() {
+    document.getElementById('messagesContainer').style.display = 'block';
+    document.getElementById('groupsContainer').style.display = 'none';
+    document.getElementById('messagesTab').style.background = '#97ebc8';
+    document.getElementById('groupsTab').style.background = '#f0f0f0';
+}
+
+/**
+ * Switch to Groups tab
+ */
+function switchToGroups() {
+    document.getElementById('messagesContainer').style.display = 'none';
+    document.getElementById('groupsContainer').style.display = 'block';
+    document.getElementById('messagesTab').style.background = '#f0f0f0';
+    document.getElementById('groupsTab').style.background = '#97ebc8';
+    loadGroupList();
+}
+
+/**
+ * Open create group modal
+ */
+function openCreateGroupModal() {
+    document.getElementById('createGroupModal').style.display = 'block';
+    loadGroupFriendsForSelector();
+}
+
+/**
+ * Close create group modal
+ */
+function closeCreateGroupModal() {
+    document.getElementById('createGroupModal').style.display = 'none';
+    document.getElementById('groupNameInput').value = '';
+    document.getElementById('groupDescriptionInput').value = '';
+    const list = document.getElementById('groupFriendsList');
+    if (list) list.innerHTML = '<p style="color:#999; margin:0;">Loading friends…</p>';
+    const search = document.getElementById('groupMemberSearch');
+    if (search) search.value = '';
+    const selectAll = document.getElementById('selectAllGroupMembers');
+    if (selectAll) selectAll.checked = false;
+    updateSelectedMembersCount();
+}
+
+/**
+ * Create new group
+ */
+async function createNewGroup() {
+    try {
+        const groupName = document.getElementById('groupNameInput').value.trim();
+        const description = document.getElementById('groupDescriptionInput').value.trim();
+
+        if (!groupName) {
+            alert('Group name is required');
+            return;
+        }
+
+        const group = await GroupAPI.createGroup(groupName, description);
+        console.log('Group created:', group);
+
+        // Add selected members immediately after creation
+        const selectedIds = getSelectedGroupMemberIds();
+        let addedCount = 0;
+        if (Array.isArray(selectedIds) && selectedIds.length > 0) {
+            const results = await Promise.allSettled(
+                selectedIds.map(uid => GroupAPI.addMember(group.groupId, uid))
+            );
+            addedCount = results.filter(r => r.status === 'fulfilled').length;
+        }
+
+        alert(`Group created successfully${addedCount ? ` and ${addedCount} friend(s) added` : ''}!`);
+        closeCreateGroupModal();
+        loadGroupList();
+    } catch (err) {
+        console.error('Error creating group:', err);
+        alert('Error creating group: ' + err.message);
+    }
+}
+
+// ===== Friend selector for Create Group =====
+let cachedFriendsForGroup = [];
+
+async function loadGroupFriendsForSelector() {
+    const list = document.getElementById('groupFriendsList');
+    if (!list) return;
+    try {
+        list.innerHTML = '<p style="color:#999; margin:0;">Loading friends…</p>';
+        const friends = await api.friends.getFriendsList();
+        cachedFriendsForGroup = Array.isArray(friends) ? friends : [];
+        renderGroupFriendsList(cachedFriendsForGroup);
+    } catch (e) {
+        console.error('Failed to load friends for group selector:', e);
+        list.innerHTML = '<p style="color:red; margin:0;">Failed to load friends</p>';
+    }
+}
+
+function renderGroupFriendsList(friends) {
+    const list = document.getElementById('groupFriendsList');
+    if (!list) return;
+    if (!friends || friends.length === 0) {
+        list.innerHTML = '<p style="color:#999; margin:0;">No friends to add</p>';
+        updateSelectedMembersCount();
+        return;
+    }
+    list.innerHTML = friends.map(f => {
+        const avatar = (f.avatarUrl && f.avatarUrl.trim()) ? f.avatarUrl : 'images/avatars/default_avatar.png';
+        const name = f.displayName || f.username || `User ${f.userId}`;
+        const fallbackUrl = getDefaultAvatarUrl();
+        return `
+            <label style="display:flex; align-items:center; gap:10px; padding:6px; border-radius:6px; cursor:pointer;">
+                <input type="checkbox" class="group-member-checkbox" value="${f.userId}" onchange="updateSelectedMembersCount()">
+                <img src="${avatar}" onerror="this.src='${fallbackUrl}'" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" alt="${name}">
+                <span style="font-size:13px; color:#333;">${name}</span>
+            </label>
+        `;
+    }).join('');
+
+    // Wire select-all after rendering
+    const selectAll = document.getElementById('selectAllGroupMembers');
+    if (selectAll) {
+        selectAll.onchange = () => {
+            const boxes = list.querySelectorAll('.group-member-checkbox');
+            boxes.forEach(b => b.checked = selectAll.checked);
+            updateSelectedMembersCount();
+        };
+    }
+    updateSelectedMembersCount();
+}
+
+function getSelectedGroupMemberIds() {
+    const boxes = document.querySelectorAll('.group-member-checkbox:checked');
+    return Array.from(boxes).map(b => Number(b.value)).filter(Boolean);
+}
+
+function updateSelectedMembersCount() {
+    const countEl = document.getElementById('groupMembersCount');
+    if (!countEl) return;
+    const count = getSelectedGroupMemberIds().length;
+    countEl.textContent = `${count} selected`;
+}
+
+// Search/filter friends in selector
+document.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'groupMemberSearch') {
+        const q = e.target.value.trim().toLowerCase();
+        if (!q) {
+            renderGroupFriendsList(cachedFriendsForGroup);
+            return;
+        }
+        const filtered = cachedFriendsForGroup.filter(f => {
+            const name = (f.displayName || f.username || '').toLowerCase();
+            return name.includes(q);
+        });
+        renderGroupFriendsList(filtered);
+    }
+});
+
+/**
+ * Load group list
+ */
+async function loadGroupList() {
+    try {
+        debugLog('📋 loadGroupList called');
+        const groups = await GroupAPI.getUserGroups();
+        debugLog('📋 Got', groups?.length, 'groups');
+        
+        const container = document.getElementById('groupListContainer');
+        
+        if (!groups || groups.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No groups yet. Create one to get started!</p>';
+            return;
+        }
+
+        container.innerHTML = groups
+            .map(group => {
+                const groupIconUrl = getImageUrl('images/avatars/default_group.png');
+                return `
+                    <div class="group-item" data-group-id="${group.groupId}" onclick="openGroup(${group.groupId}, '${group.groupName.replace(/'/g, "\\'")}', '${groupIconUrl}')">
+                        <div class="group-icon-badge">
+                            <img src="${groupIconUrl}" alt="${group.groupName}" onerror="this.src='${groupIconUrl}'">
+                            <div class="group-unread-badge" data-group-id="${group.groupId}" style="display:none;">0</div>
+                        </div>
+                        <div class="group-item-info">
+                            <b>${group.groupName}</b>
+                            <p>${group.description}</p>
+                        </div>
+                    </div>
+                `;
+            })
+            .join('');
+    } catch (err) {
+        console.error('Error loading group list:', err);
+        document.getElementById('groupListContainer').innerHTML = 
+            '<p style="text-align: center; color: red; padding: 20px;">Error loading groups</p>';
+    }
+}
+
+/**
+ * Open group chat
+ */
+function openGroup(groupId, groupName, avatarUrl) {
+    currentGroupId = groupId;
+    currentChatUserId = null;
+    currentChatMode = 'group';
+    currentChat = groupName;
+
+    document.getElementById('chatName').innerText = groupName;
+    const avatarImg = document.getElementById('chatAvatar');
+    avatarImg.src = avatarUrl;
+
+    messageMap.clear();
+    markedAsReadMessages.clear(); // Clear tracked messages when switching groups
+    document.getElementById('chatBox').innerHTML = '<p style="text-align: center; color: #999;">Loading...</p>';
+    
+    // Clear existing refresh interval
+    if (refreshInterval) clearInterval(refreshInterval);
+    
+    // Mark group as read and clear badge
+    const badge = document.querySelector(`.group-unread-badge[data-group-id="${groupId}"]`);
+    if (badge) {
+        badge.textContent = '0';
+        badge.classList.add('zero');
+        badge.style.display = 'none';
+    }
+    GroupAPI.markGroupAsRead(groupId).catch(err => console.error('Error marking group as read:', err));
+    
+    // Load group messages
+    loadGroupMessagesFromAPI(groupId);
+
+    // Highlight selected group
+    document.querySelectorAll('.group-item').forEach(el => el.style.background = 'transparent');
+    const selectedGroup = document.querySelector(`.group-item[data-group-id="${groupId}"]`);
+    if (selectedGroup) selectedGroup.style.background = '#f0f0f0';
+}
+
+/**
+ * Load group messages from API
+ */
+async function loadGroupMessagesFromAPI(groupId) {
+    try {
+        debugLog('📋 loadGroupMessagesFromAPI called for group:', groupId);
+        const messages = await GroupAPI.getGroupMessages(groupId, 0, 50);
+        
+        let chatBox = document.getElementById('chatBox');
+        chatBox.innerHTML = '';
+        messageMap.clear();
+        
+        if (!Array.isArray(messages) || messages.length === 0) {
+            chatBox.innerHTML = '<p style="text-align: center; color: #999;">No messages yet</p>';
+            return;
+        }
+
+        // Add messages to UI (reverse order so oldest first)
+        messages.reverse().forEach(msg => {
+            addMessageToUI(msg);
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    } catch (err) {
+        console.error('Error loading group messages:', err);
+        document.getElementById('chatBox').innerHTML = 
+            '<p style="text-align: center; color: red;">Error loading messages</p>';
+    }
+}
+
+/**
+ * Send group message
+ */
+async function sendGroupMsg() {
+    if (!currentGroupId) return;
+
+    let input = document.getElementById('msgInput');
+    let text = input.value.trim();
+    
+    if (!text && !pendingMediaFile) {
+        debugLog('❌ No content and no media to send');
+        return;
+    }
+
+    input.disabled = true;
+    const uploadBtn = document.getElementById('uploadBtn');
+    if (uploadBtn) uploadBtn.disabled = true;
+
+    try {
+        if (pendingMediaFile) {
+            debugLog('📸 Sending media to group:', currentGroupId);
+            // TODO: Implement media upload to group
+            alert('Group media upload coming soon');
+            return;
+        } else {
+            debugLog('📝 Sending text message to group:', currentGroupId);
+            const result = await GroupAPI.sendGroupMessage(currentGroupId, text);
+            if (result) {
+                addMessageToUI(result);
+            }
+            input.value = '';
+        }
+    } catch (err) {
+        debugLog('❌ Error in sendGroupMsg:', err.message);
+        alert('Failed to send: ' + err.message);
+    } finally {
+        input.disabled = false;
+        if (uploadBtn) uploadBtn.disabled = false;
+        input.focus();
+    }
+}
+
+/**
+ * Override sendMsg to handle both direct and group messages
+ */
+const originalSendMsg = window.sendMsg;
+window.sendMsg = function() {
+    if (currentChatMode === 'group') {
+        sendGroupMsg();
+    } else {
+        originalSendMsg.call(this);
+    }
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create account • Gummy</title>
+<link rel="stylesheet" href="css/ui.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background: #F7F7F7;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;  /* Căn giữa theo chiều dọc */
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .gummy-register-box {
+    width: 450px;
+    background: white;
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .gummy-logo {
+    font-size: 55px;
+    font-weight: 700;
+    text-align: center;
+    color: #E88DB5;
+    margin-bottom: 10px;
+  }
+
+  .sub {
+    text-align: center;
+    color: #A67E9B;
+    margin-bottom: 30px;
+    font-size: 17px;
+  }
+
+  /* INPUT FIELDS */
+  .g-row {
+    display: flex;
+    gap: 15px;  /* Tăng khoảng cách giữa 2 ô */
+    margin-bottom: 15px;
+  }
+
+  .g-input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+    background: white;
+    font-size: 15px;
+    color: #555;
+    transition: 0.25s;
+  }
+
+  .g-input:focus {
+    border-color: #B7EBD6;
+    box-shadow: 0 0 0 3px rgba(183,235,214,0.45);
+    outline: none;
+  }
+
+  /* Each input has spacing */
+  .g-input.single {
+    margin-bottom: 15px;
+  }
+
+  /* BUTTON */
+  .gummy-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
+    background: #B7EBD6;
+    color: #3f5f56;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s;
+  }
+
+  .gummy-btn:hover {
+    background: #AEE4CD;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+  }
+
+  /* LINK */
+  .g-login-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .g-login-link a {
+    color: #A67E9B;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.2s;
+  }
+
+  .g-login-link a:hover {
+    color: #8f6e89;
+  }
+
+  /* Toast notification */
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateX(0);
+    animation: slideIn 0.3s ease forwards;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .toast.success {
+    border-left: 4px solid #4DB49F;
+  }
+
+  .toast.success .toast-icon {
+    color: #4DB49F;
+  }
+
+  .toast.error {
+    border-left: 4px solid #E88DB5;
+  }
+
+  .toast.error .toast-icon {
+    color: #E88DB5;
+  }
+
+  .toast-icon {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .toast-message {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="gummy-register-box">
+
+  <div class="gummy-logo">Gummy</div>
+  <div class="sub">Join the sweetest social world ♡</div>
+
+  <form id="registerForm" onsubmit="return false;">
+    <div class="g-row">
+      <input id="reg_firstname" class="g-input" placeholder="First name">
+      <input id="reg_lastname" class="g-input" placeholder="Surname">
+    </div>
+
+    <input id="reg_email" class="g-input single" placeholder="Email or Mobile number" required>
+    <input id="reg_password" class="g-input single" placeholder="Password" type="password" required>
+
+    <button type="submit" class="gummy-btn">Create Account</button>
+
+    <div class="g-login-link">
+      <a href="login.html">Already have an account?</a>
+    </div>
+  </form>
+
+</div>
+
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/auth-shared.js"></script>
+<script src="js/pages/auth.js"></script>
+</body>
+</html>
