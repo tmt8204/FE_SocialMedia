@@ -25,5 +25,5 @@
 // ========================================
 
 // 🔧 Thay đổi URL này theo môi trường của bạn:
-//window.BACKEND_URL = 'https://gummy-api.ngrok.app'; // Thay bằng địa chỉ backend server của bạn
-window.BACKEND_URL = 'http://192.168.1.53:8080'; // Thay bằng địa chỉ backend server của bạn
+window.BACKEND_URL = 'https://gummy-api.ngrok.app'; // Thay bằng địa chỉ backend server của bạn
+//window.BACKEND_URL = 'http://192.168.1.53:8080'; // Thay bằng địa chỉ backend server của bạn
