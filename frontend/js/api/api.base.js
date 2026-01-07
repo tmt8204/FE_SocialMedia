@@ -163,23 +163,42 @@
       if (typeof avatarUrl === 'string' && avatarUrl.trim() === '') {
         return this.getImageUrl('images/avatars/default_avatar.png');
       }
-      // If URL starts with /, make it full URL via backend
-      if (typeof avatarUrl === 'string' && avatarUrl.startsWith('/')) {
-        return this.baseUrl + avatarUrl;
-      }
       // If it's already a full URL, return as-is
-      if (typeof avatarUrl === 'string' && avatarUrl.match(/^https?:\/\//)) {
+      if (typeof avatarUrl === 'string' && /^https?:\/\//i.test(avatarUrl)) {
         return avatarUrl;
       }
-      // Relative path - make full URL
+      // Paths coming from backend (starts with /uploads or /media etc.) should use backend base
+      if (typeof avatarUrl === 'string' && avatarUrl.startsWith('/')) {
+        return this.baseUrl.replace(/\/$/, '') + avatarUrl;
+      }
+      // Relative path - delegate to image helper (will pick FE for images/*)
       return this.getImageUrl(avatarUrl);
     },
 
-    // Get full URL for static images
+    // Get full URL for images and media paths
     getImageUrl(imagePath) {
-      // Remove leading slash if present
-      const path = imagePath.startsWith('/') ? imagePath : '/' + imagePath;
-      return this.baseUrl + path;
+      if (!imagePath) return '';
+      // Already absolute URL
+      if (typeof imagePath === 'string' && /^https?:\/\//i.test(imagePath)) {
+        return imagePath;
+      }
+      const pathStr = String(imagePath);
+      const hasLeadingSlash = pathStr.startsWith('/');
+      const normalized = hasLeadingSlash ? pathStr : '/' + pathStr;
+
+      // Backend-hosted dynamic content
+      if (/^\/(uploads|media|post)\//i.test(normalized)) {
+        return this.baseUrl.replace(/\/$/, '') + normalized;
+      }
+
+      // Frontend static assets (images, css, js, etc.)
+      if (/^\/(images|assets)\//i.test(normalized)) {
+        // Return relative path (no leading slash) to respect current base path
+        return normalized.slice(1);
+      }
+
+      // Default: treat as backend-relative path
+      return this.baseUrl.replace(/\/$/, '') + normalized;
     }
   };
 
@@ -188,6 +207,7 @@
   
   // Global helper function for getting image URLs
   global.getImageUrl = (imagePath) => api.getImageUrl(imagePath);
-  global.getDefaultAvatarUrl = () => api.getImageUrl('images/avatars/default_avatar.png');
+  // Default avatar should come from FE static assets
+  global.getDefaultAvatarUrl = () => 'images/avatars/default_avatar.png';
 
 })(window);
